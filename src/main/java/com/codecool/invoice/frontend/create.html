@@ -3,19 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Create invoice</title>
+    <style>
+        #total {
+            padding-top: 70px;
+            padding-bottom: 70px !important;
+            color: red !important;
+            font-size: 40px;
+        }
+        .buttons {
+            text-align: center;
+        }
+        .align {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body {
+            background-color: lightblue !important;
+        }
+        form {
+            display: table;
+        }
+    </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+    <div class="align">
+    <div class="float-right">
     <form id="form">
-        Invoice #: <input type="number" id="invoiceNo"/> <br>
-        Invoice date: <input type="date" id="date"/> <br>
-        From: <textarea id="from"></textarea> <br>
-        Bill to: <textarea id="to"></textarea> <br>
-        Description: <input type="text" id="itemDesc1"/> <br>
-        Amount: <input type="number" id="itemAmount1"/> <br>
-        <input type="button" value="Add new item" onclick="addNewItem()"/> <br>
-
-        <input type="button" value="Submit" onclick="getData(); location.href = '/invoice'"/>
+        <div class="form-group">
+            <label for="invoiceNo">Invoice #</label>
+            <input type="number" class="form-control" id="invoiceNo"/>
+        </div>
+        <div class="form-group">
+            <label for="date">Invoice date</label>
+            <input type="date" class="form-control" id="date"/>
+        </div>
+        <div class="form-group">
+            <label for="from">From</label>
+            <textarea class="form-control" id="from"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="to">Bill to</label>
+            <textarea class="form-control" id="to"></textarea>
+        </div>
+        <label for="itemDesc1">Item</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="itemDesc1"/>
+            <label for="itemAmount1">&nbsp; Amount: &nbsp;</label>
+            <input type="number" class="form-control amount" id="itemAmount1"/>
+        </div>
     </form>
+        <input type="button" class="btn btn-danger float-right" value="Get Total" onclick="calculateTotal()"/>
+    </div>
+    </div>
+    <div class="buttons">
+    <input type="button" class="btn btn-danger" value="Add new item" onclick="addNewItem()"/>
+    <div id="total">
+
+    </div>
+    <input type="button" class="btn btn-danger" value="Submit" onclick="getData(); location.href = '/invoice'"/>
+    </div>
 </body>
 <script>
     var itemCount = 1;
@@ -44,21 +96,41 @@
     }
 </script>
 <script>
-    function addNewItem() {
+   function addNewItem() {
         itemCount++;
         var container = document.getElementById('form');
 
-        var inputDesc = document.createElement('input');
-        inputDesc.type = 'text';
-        inputDesc.id = 'itemDesc' + itemCount;
-        container.appendChild(inputDesc);
-        container.appendChild(document.createElement('br'));
+        var itemDiv = document.createElement('div');
+        itemDiv.className = 'input-group';
 
-        var inputAmount = document.createElement('input');
-        inputAmount.type = 'number';
-        inputAmount.id = 'itemAmount' + itemCount;
-        container.appendChild(inputAmount);
-        container.appendChild(document.createElement('br'));
+        var itemDesc = document.createElement('input');
+        itemDesc.type = 'text';
+        itemDesc.id = 'itemDesc' + itemCount;
+        itemDesc.className = 'form-control';
+        itemDiv.appendChild(itemDesc);
+
+        var amountLabel = document.createElement('label');
+        amountLabel.htmlFor = 'itemAmount' + itemCount;
+        amountLabel.innerHTML = '&nbsp; Amount: &nbsp';
+        itemDiv.appendChild(amountLabel);
+
+        var itemAmount = document.createElement('input');
+        itemAmount.type = 'number';
+        itemAmount.id = 'itemAmount' + itemCount;
+        itemAmount.className = 'form-control amount';
+        itemDiv.appendChild(itemAmount);
+
+        container.appendChild(itemDiv);
+    }
+</script>
+<script>
+    function calculateTotal() {
+        var amountsArray = document.getElementsByClassName('amount');
+        var sum = 0;
+        for (i = 0; i < amountsArray.length; i++){
+            sum += Number(amountsArray[i].value);
+        }
+        document.getElementById('total').innerHTML = 'TOTAL PLN: ' + sum;
     }
 </script>
 </html>
