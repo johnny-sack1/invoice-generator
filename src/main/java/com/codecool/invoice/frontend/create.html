@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <title>Create invoice</title>
     <style>
-        #total {
-            padding-top: 70px;
-            padding-bottom: 70px !important;
-            color: red !important;
-            font-size: 40px;
+        .submit {
+            padding-top: 20px;
+            padding-bottom: 40px;
         }
         .buttons {
             text-align: center;
@@ -66,7 +64,9 @@
     <div id="total">
 
     </div>
+    <div class="submit">
     <input type="button" class="btn btn-danger" value="Submit" onclick="getData(); location.href = '/invoice'"/>
+    </div>
     </div>
 </body>
 <script>
@@ -130,7 +130,11 @@
         for (i = 0; i < amountsArray.length; i++){
             sum += Number(amountsArray[i].value);
         }
-        document.getElementById('total').innerHTML = 'TOTAL PLN: ' + sum;
+        totalField = document.getElementById('total');
+        totalField.style.padding = '70px 0px 70px 0px';
+        totalField.style.color = 'red';
+        totalField.style.fontSize = '40px';
+        totalField.innerHTML = 'TOTAL PLN: ' + sum;
     }
 </script>
 </html>
