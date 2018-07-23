@@ -5,25 +5,45 @@
     <title>Generated invoice</title>
 </head>
 <body onload="produceInvoice()">
+    <div id="invoiceNo">
+
+    </div>
+    <div id="date">
+
+    </div>
     <div id="from">
 
     </div>
     <div id="to">
 
     </div>
-    <div id="amount">
+    <div id="items">
 
     </div>
 </body>
 <script>
     function produceInvoice() {
+        var itemCount = localStorage.getItem('itemCount');
+        console.log(itemCount);
+
+        var invoiceNo = localStorage.getItem('invoiceNo');
+        var date = localStorage.getItem('date');
         var from = localStorage.getItem('from');
         var to = localStorage.getItem('to');
-        var amount = localStorage.getItem('amount');
 
+        document.getElementById('invoiceNo').innerHTML = invoiceNo;
+        document.getElementById('date').innerHTML = date;
         document.getElementById('from').innerHTML = from;
         document.getElementById('to').innerHTML = to;
-        document.getElementById('amount').innerHTML = amount;
+
+        var itemContainer = document.getElementById('items');
+        for (i = 1; i <= itemCount; i++) {
+            var itemDiv = document.createElement('div');
+            itemDiv.id = 'item' + i;
+            itemDiv.innerHTML = localStorage.getItem('itemDesc' + i) + '\n' + localStorage.getItem('itemAmount' + i) ;
+            itemContainer.appendChild(itemDiv);
+            itemContainer.appendChild(document.createElement('br'));
+        }
     }
 </script>
 </html>
