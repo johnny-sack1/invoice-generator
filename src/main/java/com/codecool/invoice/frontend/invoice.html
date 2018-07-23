@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generated invoice</title>
+</head>
+<body onload="produceInvoice()">
+    <div id="from">
+
+    </div>
+    <div id="to">
+
+    </div>
+    <div id="amount">
+
+    </div>
+</body>
+<script>
+    function produceInvoice() {
+        var from = localStorage.getItem('from');
+        var to = localStorage.getItem('to');
+        var amount = localStorage.getItem('amount');
+
+        document.getElementById('from').innerHTML = from;
+        document.getElementById('to').innerHTML = to;
+        document.getElementById('amount').innerHTML = amount;
+    }
+</script>
+</html>
