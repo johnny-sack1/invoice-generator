@@ -5,22 +5,60 @@
     <title>Create invoice</title>
 </head>
 <body>
+    <form id="form">
+        Invoice #: <input type="number" id="invoiceNo"/> <br>
+        Invoice date: <input type="date" id="date"/> <br>
         From: <textarea id="from"></textarea> <br>
         Bill to: <textarea id="to"></textarea> <br>
-        Amount: <input type="number" id="amount"/>
+        Description: <input type="text" id="itemDesc1"/> <br>
+        Amount: <input type="number" id="itemAmount1"/> <br>
+        <input type="button" value="Add new item" onclick="addNewItem()"/> <br>
 
-        <input type="button" value="submit" onclick="getData(); location.href = '/invoice'"/>
-
+        <input type="button" value="Submit" onclick="getData(); location.href = '/invoice'"/>
+    </form>
 </body>
-    <script>
-        function getData() {
-    var from = document.getElementById('from').value;
-    var to = document.getElementById('to').value;
-    var amount = document.getElementById('amount').value;
+<script>
+    var itemCount = 1;
+</script>
+<script>
+    function getData() {
+        var invoiceNo = document.getElementById('invoiceNo').value;
+        var date = document.getElementById('date').value;
+        var from = document.getElementById('from').value;
+        var to = document.getElementById('to').value;
 
-    localStorage.setItem('from', from);
-    localStorage.setItem('to', to);
-    localStorage.setItem('amount', amount);
-}
-    </script>
+        localStorage.setItem('invoiceNo', invoiceNo);
+        localStorage.setItem('date', date);
+        localStorage.setItem('from', from);
+        localStorage.setItem('to', to);
+
+        localStorage.setItem('itemCount', itemCount);
+
+        for (i = 1; i <= itemCount; i++) {
+            var itemDesc = document.getElementById('itemDesc' + i).value;
+            localStorage.setItem('itemDesc' + i, itemDesc);
+
+            var itemAmount = document.getElementById('itemAmount' + i).value;
+            localStorage.setItem('itemAmount' + i, itemAmount);
+        }
+    }
+</script>
+<script>
+    function addNewItem() {
+        itemCount++;
+        var container = document.getElementById('form');
+
+        var inputDesc = document.createElement('input');
+        inputDesc.type = 'text';
+        inputDesc.id = 'itemDesc' + itemCount;
+        container.appendChild(inputDesc);
+        container.appendChild(document.createElement('br'));
+
+        var inputAmount = document.createElement('input');
+        inputAmount.type = 'number';
+        inputAmount.id = 'itemAmount' + itemCount;
+        container.appendChild(inputAmount);
+        container.appendChild(document.createElement('br'));
+    }
+</script>
 </html>
