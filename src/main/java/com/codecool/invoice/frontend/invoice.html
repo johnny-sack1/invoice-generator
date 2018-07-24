@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Generated invoice</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 </head>
-<body onload="produceInvoice()">
+<body onload="generateInvoice()">
     <div id="invoiceNo">
 
     </div>
@@ -22,28 +23,38 @@
     </div>
 </body>
 <script>
-    function produceInvoice() {
-        var itemCount = localStorage.getItem('itemCount');
-        console.log(itemCount);
+    function generateInvoice() {
+        var doc = new jsPDF();
+        doc.setFontType('bold');
+        doc.setFontSize(24);
+        doc.text(20, 20, localStorage.getItem('from'));
+        doc.text(150, 20, 'INVOICE');
 
-        var invoiceNo = localStorage.getItem('invoiceNo');
-        var date = localStorage.getItem('date');
-        var from = localStorage.getItem('from');
-        var to = localStorage.getItem('to');
+        doc.setFontSize(14);
+        doc.text(20, 50, 'Bill To');
+        doc.text(140, 50, 'Invoice #');
+        doc.text(140, 57, 'Invoice Date');
+        doc.setFontType('normal');
+        doc.text(180, 50, localStorage.getItem('invoiceNo'));
+        doc.text(180, 57, localStorage.getItem('date'));
+        doc.text(20, 57, localStorage.getItem('to'));
 
-        document.getElementById('invoiceNo').innerHTML = invoiceNo;
-        document.getElementById('date').innerHTML = date;
-        document.getElementById('from').innerHTML = from;
-        document.getElementById('to').innerHTML = to;
+        doc.setFontType('bold');
+        doc.text(65, 85, 'DESCRIPTION');
+        doc.text(140, 85, 'AMOUNT');
 
-        var itemContainer = document.getElementById('items');
-        for (i = 1; i <= itemCount; i++) {
-            var itemDiv = document.createElement('div');
-            itemDiv.id = 'item' + i;
-            itemDiv.innerHTML = localStorage.getItem('itemDesc' + i) + '\n' + localStorage.getItem('itemAmount' + i) ;
-            itemContainer.appendChild(itemDiv);
-            itemContainer.appendChild(document.createElement('br'));
+        doc.setFontType('normal');
+        for (i = 1; i <= localStorage.getItem('itemCount'); i++) {
+            doc.text(20, 90 + 8 * i, localStorage.getItem('itemDesc' + i));
+            doc.text(160, 90 + 8 * i, localStorage.getItem('itemAmount' + i));
         }
+
+        doc.setFontType('bold');
+        var spacing = Number(localStorage.getItem('itemCount')) + 1;
+        doc.text(110, 90 + 8 * spacing, 'TOTAL');
+        doc.text(160, 90 + 8 * spacing, 'PLN ' + localStorage.getItem('total'));
+
+        doc.save('my.pdf');
     }
 </script>
 </html>
