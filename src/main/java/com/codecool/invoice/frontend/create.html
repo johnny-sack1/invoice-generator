@@ -85,6 +85,7 @@
         localStorage.setItem('to', to);
 
         localStorage.setItem('itemCount', itemCount);
+        localStorage.setItem('total', calculateTotal());
 
         for (i = 1; i <= itemCount; i++) {
             var itemDesc = document.getElementById('itemDesc' + i).value;
@@ -127,6 +128,7 @@
     function calculateTotal() {
         var amountsArray = document.getElementsByClassName('amount');
         var sum = 0;
+
         for (i = 0; i < amountsArray.length; i++){
             sum += Number(amountsArray[i].value);
         }
@@ -135,6 +137,8 @@
         totalField.style.color = 'red';
         totalField.style.fontSize = '40px';
         totalField.innerHTML = 'TOTAL PLN: ' + sum;
+
+        return sum;
     }
 </script>
 </html>
